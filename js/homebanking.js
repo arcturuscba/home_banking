@@ -95,18 +95,23 @@ function depositarDinero() {
 }
 
 function pagarServicio() {
+  var montoAnterior = saldoCuenta;
   var servicio = prompt("ingrese el numero correspondiente al servicio que desea pagar \n" + "1 - Agua \n"  + "2 - Luz \n" + "3 - Internet\n" + "4 - Telefono\n")
   switch (servicio) {
     case "1":
+      servicio = "Agua";
       montoServicio = saldoAgua;
       break;
     case "2":
+    servicio = "Luz";
       montoServicio = saldoLuz;
       break;
     case "3":
+      servicio = "Internet";
       montoServicio = saldoInternet;
       break;
     case "4":
+      servicio = "Telefono";
       montoServicio = saldoTelefono;
       break;
     default:
@@ -115,6 +120,7 @@ function pagarServicio() {
   if(comprobarSaldoNegativo("servicio",montoServicio)){
     restarDinero(montoServicio);
     actualizarSaldoEnPantalla(montoServicio);
+    alert("has pagado el servicio de: " + servicio + "\n" + "saldo anterior: $" + montoAnterior + "\n"  + "saldo actual: $" + saldoCuenta);
     }
     else {
       console.log("error");
