@@ -8,6 +8,9 @@ var saldoTelefono = 900;
 var saldoLuz = 800;
 var saldoInternet = 1000;
 
+var cuentaAmiga1 = 1234567;
+var cuentaAmiga2 = 7654321;
+
 //Ejecución de las funciones que actualizan los valores de las variables en el HTML.
 window.onload = function() {
     cargarNombreEnPantalla();
@@ -18,17 +21,10 @@ window.onload = function() {
 
 //funciones nuevas
 
-function comprobarSaldoNegativo (tipo,extraccion) {
+function comprobarSaldoNegativo (extraccion) {
     if(extraccion > saldoCuenta) {
-
-      if (tipo == "estraccion"){
-        alert("operacion invalida su extraccion excede a su saldo disponible");
-        return false;
-      }
-      else if (tipo == "servicio"){
-        alert("operacion invalida el monto del servicio excede a su saldo disponible");
-        return false;
-      }
+      alert("operacion invalida su extraccion excede a su saldo disponible");
+      return false;
     }
     else {
       return true;
@@ -57,6 +53,18 @@ function comprobarBilletesDeCien (extraccion){
     }
 }
 
+function comprobarNroCuenta(nroCuenta){
+  if (nroCuenta == cuentaAmiga1){
+    return true;
+  }
+  else if (nroCuenta == cuentaAmiga2) {
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
 function restarDinero(montoResta) {
     saldoCuenta -= montoResta;
 }
@@ -77,7 +85,7 @@ function extraerDinero() {
   var montoAnterior = saldoCuenta;
   var montoExtraccion = prompt("ingrese el monto a extraer");
 
-  if(comprobarLimiteExtraccion(montoExtraccion) && comprobarSaldoNegativo("estraccion",montoExtraccion)  && comprobarBilletesDeCien(montoExtraccion)){
+  if(comprobarLimiteExtraccion(montoExtraccion) && comprobarSaldoNegativo(montoExtraccion)  && comprobarBilletesDeCien(montoExtraccion)){
     restarDinero(montoExtraccion);
     actualizarSaldoEnPantalla();
     }
@@ -117,7 +125,7 @@ function pagarServicio() {
     default:
       alert("No existe un servicio asociado al numero: " + servicio);
   }
-  if(comprobarSaldoNegativo("servicio",montoServicio)){
+  if(comprobarSaldoNegativo(montoServicio)){
     restarDinero(montoServicio);
     actualizarSaldoEnPantalla(montoServicio);
     alert("has pagado el servicio de: " + servicio + "\n" + "saldo anterior: $" + montoAnterior + "\n"  + "saldo actual: $" + saldoCuenta);
@@ -125,13 +133,28 @@ function pagarServicio() {
     else {
       console.log("error");
     }
-
-
 }
 
 function transferirDinero() {
+  var montoAnterior = saldoCuenta;
+  var montoTransferencia = prompt("ingrese el monto de la transferencia");
 
+  if(comprobarSaldoNegativo(montoTransferencia)){
+    var nroCuenta = prompt("ingrese el numero de cuenta destino ");
+    if(comprobarNroCuenta(nroCuenta)){
+      restarDinero(montoTransferencia);
+      actualizarSaldoEnPantalla(montoTransferencia);
+      alert("has transferido: $" + montoTransferencia + "\n" + "a la cuenta nro: " + nroCuenta + "\n"  + "saldo actual: $" + saldoCuenta);
+    }
+    else {
+      alert("El nro de cuenta ingresado no se encuentra registrada para transferir");
+    }
+  }
+  else {
+    console.log("error");
+  }
 }
+
 
 function iniciarSesion() {
 
